@@ -9,18 +9,17 @@
             if(!Console.KeyAvailable) return;
 
             // Читаем клавишу (true - не отображать её на экране)
-            ConsoleKeyInfo key = Console.ReadKey(true);
+            ConsoleKey key = Console.ReadKey(true).Key;
 
-            // Если игра окончена - реагируем только на Escape
-            if(state.IsGameOver)
+            // Если нажат Escape 
+            if(key == ConsoleKey.Escape)
             {
-                if(key.Key == ConsoleKey.Escape)
-                    state.IsExit = true;
+                state.IsExit = true;
                 return;
             }
-
+            
             // Обрабатываем стрелки
-            switch(key.Key)
+            switch (key)
             {
                 case ConsoleKey.UpArrow:
                     // Нельзя развернуться в противоположную сторону

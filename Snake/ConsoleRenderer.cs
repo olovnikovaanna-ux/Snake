@@ -30,8 +30,33 @@ namespace Snake
             //TO DO:логика отрисовки поля
 
             int width = field.Width;
-            int Heidth = field.Height;
+            int heidth = field.Height;
+            int offset = 2;
 
+            for (int y = offset; y < heidth + offset; y++)
+            {
+                Console.SetCursorPosition(offset, y);
+                Console.Write("X");
+            }
+
+            for (int x = offset; x < width + offset; x++)
+            {
+                Console.SetCursorPosition(x, offset);
+                Console.Write("X");
+            }
+
+            for (int x = offset; x <= width + offset; x++)
+            {
+                Console.SetCursorPosition(x, heidth + offset);
+                Console.Write("X");
+            }
+
+            for (int y = offset; y < heidth + offset; y++)
+            {
+
+                Console.SetCursorPosition(width + offset, y);
+                Console.Write("X");
+            }
 
         }
         
@@ -39,12 +64,26 @@ namespace Snake
         {
             //TO DO: логика отрисовки змейки
 
-            for (int i = 0; i < snake.Body.Count; i++)
+            for (int i = snake.Body.Count - 1; i >= 0; i--)
             {
                 Console.SetCursorPosition(snake.Body[i].X, snake.Body[i].Y);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("@");
-                Console.ResetColor();
+
+                if (snake.Body[i].X == 
+                    snake.Head.X && snake.Body[i].Y == snake.Head.Y)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write("@");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    Console.Write("O");
+                    Console.ResetColor();
+                }
+                
+                
+                
             }           
             
         }
