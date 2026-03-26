@@ -32,6 +32,7 @@ namespace Snake
             int width = field.Width;
             int Heidth = field.Height;
 
+
         }
         
         private void RenderSnake(Snake snake)
