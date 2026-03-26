@@ -1,17 +1,7 @@
 ﻿namespace Snake
 {
-    /// <summary>
-    /// Этот класс занимается только математическими расчётами.
-    /// Он проверяет, помещается ли змейка в поле, и вычисляет,
-    /// где должна быть голова, чтобы вся змейка была ровно по центру.
-    /// Мы сделали его статическим, потому что ему не нужно хранить данные —
-    /// только вычислять
-    /// </summary>
     public static class PositionCalculator
     {
-        /// <summary>
-        /// Рассчитывает позицию головы так, чтобы вся змейка была отцентрирована на поле
-        /// </summary>
         public static Point CalculateCenteredHeadPosition(
             int fieldWidth,         // ширина игрового поля
             int fieldHeight,        // высота игрового поля
@@ -78,9 +68,6 @@
             return headPosition;
         }
 
-        /// <summary>
-        /// Проверяет, помещается ли змейка в поле при заданном направлении
-        /// </summary>
         public static bool CanPlaceSnake(
             int fieldWidth,         // ширина игрового поля
             int fieldHeight,        // высота игрового поля

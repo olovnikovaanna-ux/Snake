@@ -1,8 +1,6 @@
 ﻿namespace Snake
 {
-    /// <summary>
-    /// Обрабатывает ввод с клавиатуры в консоли
-    /// </summary>
+    
     public class ConsoleInputHandler : IInputHandler
     {
         public void ProcessInput(GameState state)

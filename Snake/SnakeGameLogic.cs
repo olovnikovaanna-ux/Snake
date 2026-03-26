@@ -1,8 +1,6 @@
 ﻿namespace Snake
 {
-    /// <summary>
-    /// Реализует игровую логику змейки
-    /// </summary>
+    
     public class SnakeGameLogic : IGameLogic
     {
         private Random _random = new Random();

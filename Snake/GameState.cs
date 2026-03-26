@@ -1,8 +1,5 @@
 ﻿namespace Snake
 {
-    /// <summary>
-    /// Состояние игры. Содержит все данные, необходимые для работы игры.
-    /// </summary>
     public class GameState
     {
         // Управляющие флаги
@@ -55,9 +52,6 @@
             }
         }
 
-        /// <summary>
-        /// Создаёт начальную еду в случайном свободном месте
-        /// </summary>
         private Food CreateInitialFood(PlayingField field, Snake snake)
         {
             // Сгенерировать случайную точку (координату) положения еды
@@ -81,9 +75,6 @@
             );
         }
 
-        /// <summary>
-        /// Генерирует случайное положение еды, не занятое змейкой
-        /// </summary>
         private Point? GenerateRandomFoodPosition(PlayingField field, Snake snake)
         {
             int maxAttempts = 1000; // ограничиваем максимальное количество попыток

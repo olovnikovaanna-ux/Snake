@@ -53,9 +53,7 @@
             }
         }
 
-        /// <summary>
-        /// Проверяет, содержит ли змейка указанную точку
-        /// </summary>
+       
         public bool Contains(Point point)
         {
             foreach(Point segment in Body)

@@ -1,8 +1,5 @@
 ﻿namespace Snake
 {
-    /// <summary>
-    /// Простейшее представление координат на игровом поле
-    /// </summary>
     public class Point
     {
         public int X { get; set; }
