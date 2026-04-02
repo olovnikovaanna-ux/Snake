@@ -13,23 +13,14 @@
             _gameLogic = gameLogic;
         }
 
-        public void Run(GameState state)
-        {
-            while(!state.IsExit)
-            {
-                _renderer.Clear();
-                _renderer.Render(state);
-                _inputHandler.ProcessInput(state);
-                _gameLogic.Update(state);
-                Thread.Sleep(state.Fps);
-            }
-        }
+
+
 
         public void RunWithRestart()
         {
             bool playAgain = true;
 
-            while(playAgain)
+            while (playAgain)
             {
                 try
                 {
@@ -39,29 +30,23 @@
                     // Запускаем игровой цикл
                     Run(state);
 
-                    // Если вышли не по Escape (т.е. проиграли)
-                    if(state.IsGameOver)
+                    // Если игра проиграна — показываем сообщение и спрашиваем о перезапуске игры
+                    if (state.IsGameOver)
                     {
-                        // Спрашиваем, хочет ли игрок сыграть ещё
-                        Console.SetCursorPosition(0, state.Field.Height + 5);
-                        Console.Write("Хотите сыграть ещё? (y/n): ");
-
-                        ConsoleKeyInfo key = Console.ReadKey();
-                        playAgain = (key.KeyChar == 'y' || key.KeyChar == 'Y');
-
-                        if(playAgain)
+                        // Если запрошен перезапуск — начинаем новую игру
+                        if (state.IsRestartRequested)
                         {
-                            // Очищаем экран перед новой игрой
-                            Console.Clear();
+                            playAgain = true;
                         }
                     }
-                    else
+
+                    if (state.IsExit)
                     {
-                        // Если вышли по Escape - не спрашиваем
+                        // Если вышли по Escape — не спрашиваем
                         playAgain = false;
                     }
                 }
-                catch(InvalidOperationException ex)
+                catch (InvalidOperationException ex)
                 {
                     // Если не удалось создать игру (нет места для еды)
                     Console.Clear();
@@ -72,5 +57,78 @@
                 }
             }
         }
+
+        public void Run(GameState state)
+        {
+            while(!state.IsExit && !state.IsRestartRequested)
+            {
+                _renderer.Clear();
+                _renderer.Render(state);
+                //_inputHandler.ProcessInput(state);
+                Update(state);
+                Thread.Sleep(state.Fps);
+            }
+        }
+
+
+        private void Update(GameState state)
+        {
+            // обрабатываем ввод
+            _inputHandler.ProcessInput(state);
+
+            // Обновляем игру только если не на паузе
+            if (!state.IsPaused) { _gameLogic.Update(state); }
+        }
+
+
+
+
+        //public void RunWithRestart()
+        //{
+        //    bool playAgain = true;
+
+        //    while(playAgain)
+        //    {
+        //        try
+        //        {
+        //            // Создаём новую игру
+        //            GameState state = new GameState();
+
+        //            // Запускаем игровой цикл
+        //            Run(state);
+
+        //            // Если вышли не по Escape (т.е. проиграли)
+        //            if(state.IsGameOver)
+        //            {
+        //                // Спрашиваем, хочет ли игрок сыграть ещё
+        //                Console.SetCursorPosition(0, state.Field.Height + 5);
+        //                Console.Write("Хотите сыграть ещё? (y/n): ");
+
+        //                ConsoleKeyInfo key = Console.ReadKey();
+        //                playAgain = (key.KeyChar == 'y' || key.KeyChar == 'Y');
+
+        //                if(playAgain)
+        //                {
+        //                    // Очищаем экран перед новой игрой
+        //                    Console.Clear();
+        //                }
+        //            }
+        //            else
+        //            {
+        //                // Если вышли по Escape - не спрашиваем
+        //                playAgain = false;
+        //            }
+        //        }
+        //        catch(InvalidOperationException ex)
+        //        {
+        //            // Если не удалось создать игру (нет места для еды)
+        //            Console.Clear();
+        //            Console.WriteLine("ОШИБКА: " + ex.Message);
+        //            Console.WriteLine("Нажмите любую клавишу для выхода...");
+        //            Console.ReadKey();
+        //            playAgain = false;
+        //        }
+        //    }
+        //}
     }
 }
