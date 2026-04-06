@@ -44,12 +44,6 @@
                 Height = height;
             }
 
-
-
-
-
-
-
             //public int Width { get; }
             //public int Height { get; }
 

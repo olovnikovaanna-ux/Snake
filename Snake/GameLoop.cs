@@ -79,56 +79,5 @@
             // Обновляем игру только если не на паузе
             if (!state.IsPaused) { _gameLogic.Update(state); }
         }
-
-
-
-
-        //public void RunWithRestart()
-        //{
-        //    bool playAgain = true;
-
-        //    while(playAgain)
-        //    {
-        //        try
-        //        {
-        //            // Создаём новую игру
-        //            GameState state = new GameState();
-
-        //            // Запускаем игровой цикл
-        //            Run(state);
-
-        //            // Если вышли не по Escape (т.е. проиграли)
-        //            if(state.IsGameOver)
-        //            {
-        //                // Спрашиваем, хочет ли игрок сыграть ещё
-        //                Console.SetCursorPosition(0, state.Field.Height + 5);
-        //                Console.Write("Хотите сыграть ещё? (y/n): ");
-
-        //                ConsoleKeyInfo key = Console.ReadKey();
-        //                playAgain = (key.KeyChar == 'y' || key.KeyChar == 'Y');
-
-        //                if(playAgain)
-        //                {
-        //                    // Очищаем экран перед новой игрой
-        //                    Console.Clear();
-        //                }
-        //            }
-        //            else
-        //            {
-        //                // Если вышли по Escape - не спрашиваем
-        //                playAgain = false;
-        //            }
-        //        }
-        //        catch(InvalidOperationException ex)
-        //        {
-        //            // Если не удалось создать игру (нет места для еды)
-        //            Console.Clear();
-        //            Console.WriteLine("ОШИБКА: " + ex.Message);
-        //            Console.WriteLine("Нажмите любую клавишу для выхода...");
-        //            Console.ReadKey();
-        //            playAgain = false;
-        //        }
-        //    }
-        //}
     }
 }
