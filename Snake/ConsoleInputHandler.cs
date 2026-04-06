@@ -3,49 +3,138 @@
     
     public class ConsoleInputHandler : IInputHandler
     {
+        private bool _waitingForRestart = false;
         public void ProcessInput(GameState state)
         {
             // Если нет нажатых клавиш - выходим
-            if(!Console.KeyAvailable) return;
+            if (!Console.KeyAvailable) return;
 
             // Читаем клавишу (true - не отображать её на экране)
             ConsoleKey key = Console.ReadKey(true).Key;
 
-            // Если нажат Escape 
-            if(key == ConsoleKey.Escape)
-            {
-                state.IsExit = true;
-                return;
-            }
-            
-            // Обрабатываем стрелки
+            // Обрабатываем все клавиши в едином switch
             switch (key)
             {
-                case ConsoleKey.UpArrow:
-                    // Нельзя развернуться в противоположную сторону
-                    if(state.CurrentDirection != Direction.Down)
-                        state.CurrentDirection = Direction.Up;
+                case ConsoleKey.Enter:
+                    // Подтверждение перезапуска игры
+                    _waitingForRestart = true;
                     break;
 
-                case ConsoleKey.DownArrow:
-                    if(state.CurrentDirection != Direction.Up)
-                        state.CurrentDirection = Direction.Down;
-                    break;
-
-                case ConsoleKey.LeftArrow:
-                    if(state.CurrentDirection != Direction.Right)
-                        state.CurrentDirection = Direction.Left;
-                    break;
-
-                case ConsoleKey.RightArrow:
-                    if(state.CurrentDirection != Direction.Left)
-                        state.CurrentDirection = Direction.Right;
+                case ConsoleKey.P:
+                case ConsoleKey.Spacebar:
+                    // Пауза
+                    state.IsPaused = !state.IsPaused;
                     break;
 
                 case ConsoleKey.Escape:
+                    // Выход (в том числе из паузы)
                     state.IsExit = true;
                     break;
+
+                case ConsoleKey.UpArrow:
+                    // Движение вверх (если не на паузе)
+                    if (!state.IsPaused)
+                        ChangeDirection(state, Direction.Up, Direction.Down);
+                    break;
+
+                case ConsoleKey.DownArrow:
+                    // Движение вниз (если не на паузе)
+                    if (!state.IsPaused)
+                        ChangeDirection(state, Direction.Down, Direction.Up);
+                    break;
+
+                case ConsoleKey.LeftArrow:
+                    // Движение влево (если не на паузе)
+                    if (!state.IsPaused)
+                        ChangeDirection(state, Direction.Left, Direction.Right);
+                    break;
+
+                case ConsoleKey.RightArrow:
+                    // Движение вправо (если не на паузе)
+                    if (!state.IsPaused)
+                        ChangeDirection(state, Direction.Right, Direction.Left);
+                    break;
+            }
+
+            // Обработка перезапуска после проигрыша (клавиша Enter)
+            if (_waitingForRestart)
+            {
+                // Если нажат Enter, изменяем глобальный флаг перезапуска игры
+                if (key == ConsoleKey.Enter) { state.IsRestartRequested = true; }
+
+                // Изменяем локальный флаг перезапуска игры
+                _waitingForRestart = false;
             }
         }
+
+        public void WaitForRestart()
+        {
+            _waitingForRestart = true;
+        }
+
+        public bool AskPlayAgain()
+        {
+            // Ждём, пока пользователь отпустит предыдущие клавиши
+            while (Console.KeyAvailable)
+            {
+                Console.ReadKey(true);
+            }
+
+            WaitForRestart();
+            return false; // Возвращаем false, реальное решение будет в ProcessInput
+        }
+
+        private static void ChangeDirection(GameState state, Direction newDirection, Direction oppositeDirection)
+        {
+            // Разворот на 180° запрещён, если длина змейки больше 1
+            if (state.Snake.Body.Count > 1 && state.CurrentDirection != oppositeDirection)
+            {
+                state.CurrentDirection = newDirection;
+            }
+        }
+
+
+
+        //    // Если нет нажатых клавиш - выходим
+        //    if(!Console.KeyAvailable) return;
+
+        //    // Читаем клавишу (true - не отображать её на экране)
+        //    ConsoleKey key = Console.ReadKey(true).Key;
+
+        //    // Если нажат Escape 
+        //    if(key == ConsoleKey.Escape)
+        //    {
+        //        state.IsExit = true;
+        //        return;
+        //    }
+
+        //    // Обрабатываем стрелки
+        //    switch (key)
+        //    {
+        //        case ConsoleKey.UpArrow:
+        //            // Нельзя развернуться в противоположную сторону
+        //            if(state.CurrentDirection != Direction.Down)
+        //                state.CurrentDirection = Direction.Up;
+        //            break;
+
+        //        case ConsoleKey.DownArrow:
+        //            if(state.CurrentDirection != Direction.Up)
+        //                state.CurrentDirection = Direction.Down;
+        //            break;
+
+        //        case ConsoleKey.LeftArrow:
+        //            if(state.CurrentDirection != Direction.Right)
+        //                state.CurrentDirection = Direction.Left;
+        //            break;
+
+        //        case ConsoleKey.RightArrow:
+        //            if(state.CurrentDirection != Direction.Left)
+        //                state.CurrentDirection = Direction.Right;
+        //            break;
+
+        //        case ConsoleKey.Escape:
+        //            state.IsExit = true;
+        //            break;
+        //    }
     }
 }
